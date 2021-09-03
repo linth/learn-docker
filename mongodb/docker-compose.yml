@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  mongo:
+    container_name: mongo-server
+    build:
+      context: mongo/
+      args:
+        MONGO_VERSION: latest
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - mongo-configdb:/data/configdb
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root          # MongoDB admin username
+      MONGO_INITDB_ROOT_PASSWORD: root!@#456    # MongoDB admin password
+    ports:
+      - 27017:27017
+    networks:
+      - mongo
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo-server        # MongoDB container name. Use comma delimited list of host names for replica sets.
+      ME_CONFIG_MONGODB_PORT: 27017                 # MongoDB port
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root         # MongoDB admin username
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root!@#456   # MongoDB admin password
+      ME_CONFIG_BASICAUTH_USERNAME: admin           # mongo-express web username
+      ME_CONFIG_BASICAUTH_PASSWORD: admin!@#456     # mongo-express web password
+    ports:
+      - 8081:8081
+    networks:
+      - mongo
+
+volumes:
+  mongo-configdb: 
+  mongo-data: 
+
+networks:
+  mongo:
+    driver: bridge
