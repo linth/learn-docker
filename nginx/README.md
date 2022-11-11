@@ -16,7 +16,7 @@ $ docker images
 $ docker run -itd --name nginx-test -p 8080:80 nginx
 ```
 
-## 4. (option 2) execute a docker-compose.yml file 
+## 4. (option 2) execute a `docker-compose.yml` file 
 `ignore`
 
 ## 5. go into redis service in docker
