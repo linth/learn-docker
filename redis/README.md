@@ -30,3 +30,4 @@ $ docker exec -it <container ID> redis-cli
 - [https://hub.docker.com/_/redis/tags](https://hub.docker.com/_/redis/tags)
 - [https://zhuanlan.zhihu.com/p/542192212](https://zhuanlan.zhihu.com/p/542192212)
 - [https://www.runoob.com/docker/docker-install-redis.html](https://www.runoob.com/docker/docker-install-redis.html)
+- [Redis｜用 Docker 架設 Redis Cluster](https://blog.bimap.com.tw/2021/06/10/dockerize-redis-cluster-tutorial)
