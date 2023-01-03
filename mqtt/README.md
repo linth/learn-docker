@@ -49,5 +49,5 @@ $ sudo systemctl restart mosquitto
 
 
 ### use MQTT client tools to test the service
-- MQTTBox
-- MQTT fx
+- [MQTTBox](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf?hl=zh-TW)
+- [MQTT fx](https://softblade.de/en/download-2/)
