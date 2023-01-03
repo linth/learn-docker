@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  postgres_db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: linth@gmail.com #$USER_EMAIL #xxx@gmail
+      PGADMIN_DEFAULT_PASSWORD: abcd #$PASSWORD #abcd
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - "postgres_db:pgsql-server"
+
+volumes:
+  db-data:
+  pgadmin-data:
