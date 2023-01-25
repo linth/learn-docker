@@ -26,7 +26,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     links:
-      - "postgres_db:pgsql-server"
+      - "postgres_db:pgsql-server" # 在postgres下的設定: host name/address
 
 volumes:
   db-data:
