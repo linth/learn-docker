@@ -35,5 +35,13 @@ volumes:
     pgadmin-data:
 ```
 
+執行 docker-compose.yml
+```cmd
+$ docker-compose up -d
+```
+
+開啟瀏覽器，輸入: http://localhost:8080/
+
+
 # Reference
 - [Docker-compose創建PostgreSQL](https://cde566.medium.com/docker-compose%E5%89%B5%E5%BB%BApostgresql-7f3f9519fa20)
