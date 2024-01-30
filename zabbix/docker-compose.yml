@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:latest
+    container_name: zabbix-server
+    ports:
+      - "10051:10051"
+    environment:
+      - DB_SERVER_HOST=zabbix-db
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=myzabbixpassword
+      - POSTGRES_DB=zabbix
+    networks:
+      - zabbix-network
+
+  zabbix-web:
+    image: zabbix/zabbix-web-apache-pgsql:latest
+    container_name: zabbix-web
+    ports:
+      - "80:8080"
+    environment:
+      - DB_SERVER_HOST=zabbix-db
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=myzabbixpassword
+      - POSTGRES_DB=zabbix
+      - ZBX_SERVER_HOST=zabbix-server
+      - PHP_TZ=UTC
+      - ZBX_SERVER_NAME=zabbix-web
+      - ZBX_DEFAULT_LANGUAGE=en
+      - ZBX_HTTPS_PORT=
+      - ZBX_ENABLE_JAVASCRIPT=0
+      - ZBX_SESSION_NAME=
+      - ZBX_SESSION_COOKIE_PATH=
+      - ZBX_GUI_USER=myzabbixuser     # 設定 Zabbix Web 登入帳號
+      - ZBX_GUI_PASSWORD=myzabbixpass # 設定 Zabbix Web 登入密碼
+    depends_on:
+      - zabbix-server
+    networks:
+      - zabbix-network
+
+  zabbix-db:
+    image: postgres:13
+    container_name: zabbix-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=myzabbixpassword
+      - POSTGRES_DB=zabbix
+    volumes:
+      - zabbix-db-data:/var/lib/postgresql/data
+    networks:
+      - zabbix-network
+
+networks:
+  zabbix-network:
+
+volumes:
+  zabbix-db-data:
