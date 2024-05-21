@@ -1,5 +1,5 @@
 # learn-docker
-learn how to use the docker tech.
+learn how to use docker and docker-compose.
 
 - Dockerfile: 單個服務執行的部屬 (類似自動化腳本)
 - docker-compose: 多個服務執行
@@ -11,48 +11,83 @@ CMD ["", ""] # 執行container時使用的
 ```
 
 
-## basic docker commands
-### 1. `docker ps`
+## 1. Docker command
+
+### 1-0. 
+
+docker version
+```
+$ docker --version
+$ docker -v
+```
+
+docker help
+```
+$ docker -h
+$ docker --help
+```
+
+### 1. docker container 常用指令
+### 1-1. `docker ps`
 only show the executing containers. 
-```shell
-$ sudo docker ps 
+```shell 
+$ docker ps # 查看目前container清單
+$ docker container ls
+$ docker ps -a # show all containers, even if the service of container is off.
 ```
 
-show all containers, even if the service of container is off.
+### 1-2. `docker stop`
 ```shell
-$ sudo docker ps -a 
+$ docker stop [CONTAINER ID]
 ```
 
-### 2. `docker stop`
+### 1-3. `docker restart` & `docker start`
 ```shell
-$ docker stop <container ID>
+$ docker restart [CONTAINER ID]
 ```
 
-### 3. `docker restart`
 ```shell
-$ docker restart <container ID>
+$ docker start [CONTAINER ID] # 啟動已停止的 Container
+$ docker container start [CONTAINER ID] 
 ```
 
-### 4. `docker rm`
+
+### 1-4. `docker rm`
 ```shell
-$ docker rm <container ID>
+$ docker rm [container ID]
 ```
 
-### 5. `docker exec`
+### 1-5. `docker exec`
 ```shell
-$ docker exec <container ID> /bin/bash
+$ docker exec [container ID] /bin/bash
 
 # for other shell script.
-$ docker exec <container ID> /bin/sh
+$ docker exec [container ID] /bin/sh
 
 # for redis.
-$ docker exec <container ID> redis-cli
+$ docker exec [container ID] redis-cli
 ```
 
-### 6. `docker build`
+### 1-6. `docker build`
 ```shell
-$ docker build -t <image_name> .
+$ docker build -t [image_name] .
 ```
+
+---
+### 2 `docker image` 常用指令
+```shell
+$ docker image ls
+$ docker image pull NAME:[tag] # 下載image
+$ docker run NAME:[tag] # 執行image, 建立container
+```
+
+```shell
+# 刪除image
+$ docker image rm IMAGE 
+$ docker rmi IMAGE
+```
+
+
 
 # Refernce
 - [https://www.youtube.com/watch?v=mPquwpxyUQU](https://www.youtube.com/watch?v=mPquwpxyUQU)
