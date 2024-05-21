@@ -57,3 +57,4 @@ $ docker build -t <image_name> .
 # Refernce
 - [https://www.youtube.com/watch?v=mPquwpxyUQU](https://www.youtube.com/watch?v=mPquwpxyUQU)
 - [https://docs.docker.com/get-started/](https://docs.docker.com/get-started/)
+- [Docker 操作簡介 - command / dockerfile / docker-compose](https://eandev.com/post/series/build-automated-deploy/docker-operate/)
