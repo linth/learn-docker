@@ -1,5 +1,10 @@
 # redis with docker
 
+> TODO: 
+> 1. Redis cluster building
+> 2. Redis cluster management
+
+
 ## 1. pull redis image from docker hub
 ```
 $ docker pull redis:latest
