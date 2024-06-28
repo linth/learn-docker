@@ -4,15 +4,17 @@ services:
         image: postgres:13.2-alpine
         restart: always
         environment: 
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_USER=postgres  # 帳號
+          - POSTGRES_PASSWORD=postgres  # 密碼
+          - POSTGRES_DB=testDB # db設定
         logging:
           options:
             max-size: 10m
             max-file: "3"
         ports:
-          - '5438:5432'
+          - '5438:5432' # 注意對應的port
         volumes:
+          # 將本地目錄 ./postgres-data 挂載到容器的 /var/lib/postgresql/data 目錄，這樣可以保留數據庫數據。
           - ./postgres-data:/var/lib/postgresql/data
           # copy the sql script to create tables
           - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
