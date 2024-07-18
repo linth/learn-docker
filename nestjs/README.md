@@ -55,3 +55,4 @@ $ docker run -p 80:3000 -d sample-nestjs-docker
 - [https://www.youtube.com/watch?v=mPquwpxyUQU](https://www.youtube.com/watch?v=mPquwpxyUQU)
 - [https://docs.nestjs.com/first-steps](https://docs.nestjs.com/first-steps)
 - [Debugging Nest.js (TypeScript) in a Docker Container](https://qiita.com/rema424/items/36475ea7379e0d9c5972), good article.
+- [Dockerizing NestJS Application](https://medium.com/@sujan.dumaru.official/dockerizing-nestjs-application-c4b25139fe4c)
