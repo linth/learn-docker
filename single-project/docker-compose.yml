@@ -1,0 +1,199 @@
+version: "3.9"
+
+services:
+  # -------------------------------------------------------
+  # PostgreSQL
+  # -------------------------------------------------------
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    # restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    # restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    depends_on:
+      - postgres
+
+  # -------------------------------------------------------
+  # MongoDB
+  # -------------------------------------------------------
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    # restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    # restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - mongodb
+
+  # -------------------------------------------------------
+  # Redis
+  # -------------------------------------------------------
+  redis:
+    image: redis:7
+    container_name: redis
+    # restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  redis-commander:
+    image: rediscommander/redis-commander
+    container_name: redis-commander
+    # restart: always
+    ports:
+      - "8082:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+
+  # -------------------------------------------------------
+  # RabbitMQ
+  # -------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    # restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+
+  # -------------------------------------------------------
+  # Kafka + Zookeeper + Kafka UI
+  # -------------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    # restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    # restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    # restart: always
+    ports:
+      - "8083:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: dev
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    depends_on:
+      - kafka
+
+  # -------------------------------------------------------
+  # MQTT Broker (Aedes)
+  # -------------------------------------------------------
+  mqtt:
+    image: morgangraphics/aedes
+    container_name: mqtt
+    # restart: always
+    ports:
+      - "1883:1883"
+      - "8888:8888"
+
+  # -------------------------------------------------------
+  # Elasticsearch
+  # -------------------------------------------------------
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+  #   container_name: elasticsearch
+  #   environment:
+  #     - discovery.type=single-node
+  #     - ES_JAVA_OPTS=-Xms1g -Xmx1g
+  #     - xpack.security.enabled=false
+  #   ports:
+  #     - "9200:9200"
+  #   volumes:
+  #     - es_data:/usr/share/elasticsearch/data
+
+  # # Kibana
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.12.1
+  #   container_name: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   depends_on:
+  #     - elasticsearch
+
+  # -------------------------------------------------------
+  # Prometheus
+  # -------------------------------------------------------
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    # restart: always
+
+  # -------------------------------------------------------
+  # Grafana
+  # -------------------------------------------------------
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    # restart: always
+    depends_on:
+      - prometheus
+
+# -------------------------------------------------------
+# Volumes
+# -------------------------------------------------------
+volumes:
+  postgres_data:
+  mongodb_data:
+  redis_data:
+  # es_data:
